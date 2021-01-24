@@ -49,8 +49,7 @@ public class TheInternetTest {
 
     @Test()
     public void testWindow() {
-        System.out.println("Test");
-        expectedResult = "New hWindow";
+        expectedResult = "New Window";
         errorMessage = "Blad powrotu do okna glownego w metodzie - testWindow";
         assertEquals(theInternet.getNewWindow(), expectedResult, errorMessage);
     }
