@@ -21,7 +21,6 @@ public class Hover {
     }
 
     public void checkViewProfile() {
-        driver.get("http://the-internet.herokuapp.com/hovers");
         Actions action = new Actions(driver);
         List<WebElement> element = driver.findElements(cssSelector("[alt='User Avatar']"));
         action.moveToElement(element.get(0)).build().perform();

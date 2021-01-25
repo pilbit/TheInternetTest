@@ -8,8 +8,7 @@ import java.util.Locale;
 
 import static java.lang.System.getProperty;
 import static org.apache.log4j.PropertyConfigurator.configure;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.*;
 
 
 public class TheInternetTest extends TheInternet {
@@ -30,6 +29,12 @@ public class TheInternetTest extends TheInternet {
         expectedResult = "A/B Test Variation 1";
         errorMessage = "Oczekiwany header strony - \"" + expectedResult + "\"";
         assertEquals(getInfo(), expectedResult, errorMessage);
+    }
+
+    @Test()
+    public void testAddRemoveElements() {
+        errorMessage = "Wystapil blad w trakcie dodawania/usuwania elementów";
+        assertTrue(getAddRemoveElements(), errorMessage);
     }
 
     @Test()

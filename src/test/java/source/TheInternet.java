@@ -4,10 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import source.pom.AbTest;
-import source.pom.Hover;
-import source.pom.JavaScriptAlert;
-import source.pom.MultipleWindows;
+import source.pom.*;
 
 import static config.Driver.getInstance;
 import static config.Driver.getInstanceWait;
@@ -39,13 +36,19 @@ public class TheInternet {
 
     public String getInfo() {
         clickMenu("A/B Testing");
-        AbTest abTest = new AbTest(driver, wait);
+        AbTestInfo abTest = new AbTestInfo(driver, wait);
         return abTest.checkAbTest();
+    }
+
+    public boolean getAddRemoveElements() {
+        clickMenu("Add/Remove Elements");
+        AddRemoveElements addRemoveElements = new AddRemoveElements(driver, wait);
+        return addRemoveElements.checkAddRemoveElements();
     }
 
     public String getAlert() {
         clickMenu("JavaScript Alerts");
-        JavaScriptAlert javaScriptAlert = new JavaScriptAlert(driver);
+        JavaScriptAlert javaScriptAlert = new JavaScriptAlert(driver, wait);
         javaScriptAlert.checkJavaScriptAlert();
         return wait.until(visibilityOf(driver.findElement(id("result")))).getText();
     }
