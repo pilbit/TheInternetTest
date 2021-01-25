@@ -1,17 +1,18 @@
+import com.github.javafaker.Faker;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import source.TheInternet;
+
+import java.util.Locale;
 
 import static config.Driver.getInstance;
 import static org.apache.log4j.PropertyConfigurator.configure;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 import static utils.ScreenShot.takeSreenShot;
 
 
@@ -22,6 +23,7 @@ public class TheInternetTest {
     private String expectedResult;
     private String errorMessage;
     private static Logger log;
+    private Faker faker;
 
     @BeforeSuite
     public void setUp() {
@@ -30,6 +32,7 @@ public class TheInternetTest {
         theInternet = new TheInternet(driver, wait);
         log = LogManager.getLogger(this.getClass().getName());
         configure(System.getProperty("user.dir")+"/src/main/resources/log4j.properties");
+        faker = new Faker(new Locale("pl"));
     }
 
     @Test()
@@ -52,6 +55,18 @@ public class TheInternetTest {
         expectedResult = "New Window";
         errorMessage = "Blad powrotu do okna glownego w metodzie - testWindow";
         assertEquals(theInternet.getNewWindow(), expectedResult, errorMessage);
+    }
+
+    @Test(dataProvider = "listaOsob")
+    public void testProvider(String imie, String nazwisko) {
+        log.info("Test data provider");
+        assertNotEquals(imie, nazwisko,"Imie i nazwisko musi sie roznic");
+    }
+
+    @DataProvider(name = "listaOsob")
+    public Object[][] providerData() {
+        return new Object[][]{{faker.name().firstName(), faker.name().lastName()}, {faker.name().firstName(), faker.name().lastName()}
+                , {faker.name().firstName(), faker.name().lastName()}};
     }
 
 
