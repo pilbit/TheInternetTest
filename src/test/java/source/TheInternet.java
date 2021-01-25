@@ -1,64 +1,72 @@
 package source;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import source.pom.AbTest;
+import source.pom.Hover;
+import source.pom.JavaScriptAlert;
+import source.pom.MultipleWindows;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import static org.openqa.selenium.By.*;
+import static config.Driver.getInstance;
+import static config.Driver.getInstanceWait;
+import static org.openqa.selenium.By.id;
+import static org.openqa.selenium.By.linkText;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 
 public class TheInternet {
-    WebDriver driver;
-    WebDriverWait wait;
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private String baseUrl;
+    private static Logger log;
 
 
-
-    public TheInternet(WebDriver driver, WebDriverWait wait) {
-        this.driver = driver;
-        this.wait = wait;
+    public TheInternet() {
+        this.driver = getInstance();
+        wait = getInstanceWait();
+        baseUrl = "http://the-internet.herokuapp.com";
+        log = LogManager.getLogger(this.getClass().getName());
     }
 
-    public void getViewProfile() {
-        driver.get("http://the-internet.herokuapp.com/hovers");
-        Actions action = new Actions(driver);
-        List<WebElement> element = driver.findElements(cssSelector("[alt='User Avatar']"));
-        action.moveToElement(element.get(0)).build().perform();
-        wait.until(elementToBeClickable(linkText("View profile"))).click();
-        wait.until(visibilityOf(driver.findElement(tagName("h1"))));
+    public String getHover() {
+        clickMenu("Hovers");
+        Hover hover = new Hover(driver, wait);
+        hover.checkViewProfile();
+        return driver.getCurrentUrl();
+    }
+
+    public String getInfo() {
+        clickMenu("A/B Testing");
+        AbTest abTest = new AbTest(driver, wait);
+        return abTest.checkAbTest();
     }
 
     public String getAlert() {
-        driver.get("http://the-internet.herokuapp.com/javascript_alerts");
-        driver.findElement(cssSelector("button[onclick='jsConfirm()']")).click();
-        driver.switchTo().alert().accept();
-        return wait.until(visibilityOf(driver.findElement(By.id("result")))).getText();
-
+        clickMenu("JavaScript Alerts");
+        JavaScriptAlert javaScriptAlert = new JavaScriptAlert(driver);
+        javaScriptAlert.checkJavaScriptAlert();
+        return wait.until(visibilityOf(driver.findElement(id("result")))).getText();
     }
 
     public String getNewWindow() {
-        driver.get("http://the-internet.herokuapp.com/windows");
-        wait.until(elementToBeClickable(driver.findElement(linkText("Click Here")))).click();
-        String window = driver.getWindowHandle();
-        Set<String> windows = driver.getWindowHandles();
-        String newWindowTitle = switchToWindow(windows);
-        driver.close();
-        driver.switchTo().window(window);
-        return newWindowTitle;
+        clickMenu("Multiple Windows");
+        MultipleWindows multipleWindows = new MultipleWindows(driver, wait);
+        return multipleWindows.MultipleWindows();
     }
 
-    private String switchToWindow(Set<String> windows) {
-        Iterator<String> iterator = windows.iterator();
-        while (iterator.hasNext()) {
-            driver.switchTo().window(iterator.next());
-        }
-        return driver.getTitle();
+
+    private void clickMenu(String nazwaMenu) {
+        driver.get(baseUrl);
+        wait.until(elementToBeClickable(driver.findElement(linkText(nazwaMenu)))).click();
+    }
+
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public static Logger getLog() {
+        return log;
     }
 }

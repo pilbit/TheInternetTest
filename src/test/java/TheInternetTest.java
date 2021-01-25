@@ -1,66 +1,63 @@
 import com.github.javafaker.Faker;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import source.TheInternet;
+import utils.ScreenShot;
 
 import java.util.Locale;
 
-import static config.Driver.getInstance;
+import static java.lang.System.getProperty;
 import static org.apache.log4j.PropertyConfigurator.configure;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
-import static utils.ScreenShot.takeSreenShot;
 
 
-public class TheInternetTest {
-    private WebDriver driver;
-    private WebDriverWait wait;
-    private TheInternet theInternet;
+public class TheInternetTest extends TheInternet {
     private String expectedResult;
     private String errorMessage;
-    private static Logger log;
+
     private Faker faker;
+
 
     @BeforeSuite
     public void setUp() {
-        this.driver = getInstance();
-        wait = new WebDriverWait(driver, 2);
-        theInternet = new TheInternet(driver, wait);
-        log = LogManager.getLogger(this.getClass().getName());
-        configure(System.getProperty("user.dir")+"/src/main/resources/log4j.properties");
+        configure(getProperty("user.dir") + "/src/main/resources/log4j.properties");
         faker = new Faker(new Locale("pl"));
     }
 
     @Test()
-    public void testViewProfile() {
-        theInternet.getViewProfile();
+    public void testReadInfo() {
+        expectedResult = "A/B Test Variation 1";
+        errorMessage = "Oczekiwany header strony - \"" + expectedResult + "\"";
+        assertEquals(getInfo(), expectedResult, errorMessage);
+    }
+
+    @Test()
+    public void testHover() {
         expectedResult = "http://the-internet.herokuapp.com/users/1";
         errorMessage = "Błąd przejscia do strony po kliknięciu w viewProfile";
-        assertEquals(driver.getCurrentUrl(), expectedResult, errorMessage);
+        assertEquals(getHover(), expectedResult, errorMessage);
     }
 
     @Test()
     public void testAlert() {
         expectedResult = "You clicked: Ok";
         errorMessage = "Nieprawidłowa informacja po akcji accept alert";
-        assertEquals(theInternet.getAlert(), expectedResult, errorMessage);
+        assertEquals(getAlert(), expectedResult, errorMessage);
     }
 
     @Test()
     public void testWindow() {
         expectedResult = "New Window";
         errorMessage = "Blad powrotu do okna glownego w metodzie - testWindow";
-        assertEquals(theInternet.getNewWindow(), expectedResult, errorMessage);
+        assertEquals(getNewWindow(), expectedResult, errorMessage);
     }
 
     @Test(dataProvider = "listaOsob")
     public void testProvider(String imie, String nazwisko) {
-        log.info("Test data provider");
-        assertNotEquals(imie, nazwisko,"Imie i nazwisko musi sie roznic");
+        errorMessage = "Imie i nazwisko musi sie roznic";
+        getLog().info("Test data provider");
+        assertNotEquals(imie, nazwisko, errorMessage);
     }
 
     @DataProvider(name = "listaOsob")
@@ -72,16 +69,12 @@ public class TheInternetTest {
 
     @AfterMethod
     public void getScreenShot(ITestResult result) {
-        if (result.getStatus() != ITestResult.SUCCESS) {
-            takeSreenShot(driver, result.getMethod().getMethodName());
-            log.error("Wystapil blad w \" "+result.getMethod().getMethodName()+" \"");
-        }else{
-            log.info("Sprawdzono \" "+result.getMethod().getMethodName()+" \"");
-        }
+        ScreenShot screenShot = new ScreenShot();
+        screenShot.chackResult(result);
     }
 
     @AfterSuite
     public void tearDown() {
-        driver.quit();
+        getDriver().quit();
     }
 }
