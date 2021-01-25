@@ -22,8 +22,6 @@ public class BasicAuth {
     }
 
     public String checkBasicAuth() {
-//        JavascriptExecutor jse = (JavascriptExecutor) driver;
-//        jse.executeScript("browserstack_executor: {\"action\": \"sendBasicAuth\", \"arguments\": {\"username\":\"admin\", \"password\": \"admin\", \"timeout\": \"<5000>\"}}");
         driver.get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
         String headerText = wait.until(ExpectedConditions.visibilityOf(header)).getText();
         driver.navigate().back();
