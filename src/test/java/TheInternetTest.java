@@ -26,7 +26,7 @@ public class TheInternetTest extends TheInternet {
 
     @Test()
     public void testReadInfo() {
-        expectedResult = "A/B Test Variation 1";
+        expectedResult = "A/B Test Control";
         errorMessage = "Oczekiwany header strony - \"" + expectedResult + "\"";
         assertEquals(getInfo(), expectedResult, errorMessage);
     }
@@ -35,6 +35,11 @@ public class TheInternetTest extends TheInternet {
     public void testAddRemoveElements() {
         errorMessage = "Wystapil blad w trakcie dodawania/usuwania elementów";
         assertTrue(getAddRemoveElements(), errorMessage);
+    }
+
+    @Test
+    public void testBasicAuth(){
+        assertEquals(getBasicAuth(),"Basic Auth");
     }
 
     @Test()

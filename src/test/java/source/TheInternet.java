@@ -46,6 +46,12 @@ public class TheInternet {
         return addRemoveElements.checkAddRemoveElements();
     }
 
+    public String getBasicAuth() {
+        clickMenu("Basic Auth");
+        BasicAuth basicAuth = new BasicAuth(driver,wait);
+        return basicAuth.checkBasicAuth();
+    }
+
     public String getAlert() {
         clickMenu("JavaScript Alerts");
         JavaScriptAlert javaScriptAlert = new JavaScriptAlert(driver, wait);
