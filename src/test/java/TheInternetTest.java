@@ -28,7 +28,7 @@ public class TheInternetTest extends TheInternet {
     public void testReadInfo() {
         expectedResult = "A/B Test Variation 1";
         errorMessage = "Oczekiwany header strony - \"" + expectedResult + "\"";
-        assertEquals(getInfo(), expectedResult, errorMessage);
+        assertTrue(getInfo(), errorMessage);
     }
 
     @Test()
@@ -40,6 +40,12 @@ public class TheInternetTest extends TheInternet {
     @Test
     public void testBasicAuth(){
         assertEquals(getBasicAuth(),"Basic Auth");
+    }
+
+    @Test
+    public void testBrokenImages(){
+        errorMessage = "Blad iloci popsutych zdjec";
+        assertEquals(getBrokenImages(),2);
     }
 
     @Test()

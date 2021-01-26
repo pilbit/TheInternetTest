@@ -15,9 +15,12 @@ public class AbTestInfo extends TheInternet {
         initElements(getDriver(), this);
     }
 
-    public String checkAbTest() {
+    public boolean checkAbTest() {
         String headerText = getWait().until(ExpectedConditions.visibilityOf(header)).getText();
         getDriver().navigate().back();
-        return headerText;
+        if(headerText.equalsIgnoreCase("A/B Test Control") || headerText.equalsIgnoreCase("A/B Test Variation 1")){
+            return true;
+        }
+        return false;
     }
 }

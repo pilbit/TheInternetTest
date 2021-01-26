@@ -34,7 +34,7 @@ public class TheInternet {
         return driver.getCurrentUrl();
     }
 
-    public String getInfo() {
+    public boolean getInfo() {
         clickMenu("A/B Testing");
         AbTestInfo abTest = new AbTestInfo();
         return abTest.checkAbTest();
@@ -50,6 +50,12 @@ public class TheInternet {
         clickMenu("Basic Auth");
         BasicAuth basicAuth = new BasicAuth();
         return basicAuth.checkBasicAuth();
+    }
+
+    public int getBrokenImages() {
+        clickMenu("Broken Images");
+        BrokenImages brokenImages = new BrokenImages();
+        return brokenImages.checkBrokenImages();
     }
 
     public String getAlert() {
