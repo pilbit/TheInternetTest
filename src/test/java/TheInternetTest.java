@@ -26,7 +26,7 @@ public class TheInternetTest extends TheInternet {
 
     @Test()
     public void testReadInfo() {
-        expectedResult = "A/B Test Control";
+        expectedResult = "A/B Test Variation 1";
         errorMessage = "Oczekiwany header strony - \"" + expectedResult + "\"";
         assertEquals(getInfo(), expectedResult, errorMessage);
     }

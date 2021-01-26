@@ -6,22 +6,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import source.TheInternet;
 
 import java.util.Random;
 
 import static org.openqa.selenium.support.PageFactory.initElements;
 
-public class AddRemoveElements {
+public class AddRemoveElements extends TheInternet {
     @FindBy(css = "button[onclick='addElement()']")
     private WebElement addElement;
     @FindBy(css = "button[onclick='deleteElement()']")
     private WebElement removeElement;
-    private WebDriver driver;
-    private WebDriverWait wait;
 
-    public AddRemoveElements(WebDriver driver, WebDriverWait wait) {
-        initElements(driver, this);
-        this.wait = wait;
+
+    public AddRemoveElements() {
+        initElements(getDriver(), this);
+
     }
 
     public boolean checkAddRemoveElements() {
@@ -44,13 +44,13 @@ public class AddRemoveElements {
 
     private void addElements(int buttomCounter) {
         for (int i = 0; i < buttomCounter; i++) {
-            wait.until(ExpectedConditions.elementToBeClickable(addElement)).click();
+            getWait().until(ExpectedConditions.elementToBeClickable(addElement)).click();
         }
     }
 
     private void removeElements(int buttomCounter) {
         for (int i = 0; i < buttomCounter; i++) {
-            wait.until(ExpectedConditions.elementToBeClickable(removeElement)).click();
+            getWait().until(ExpectedConditions.elementToBeClickable(removeElement)).click();
         }
     }
 }

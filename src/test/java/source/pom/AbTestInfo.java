@@ -5,24 +5,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import source.TheInternet;
 
 import static org.openqa.selenium.support.PageFactory.initElements;
 
-public class AbTestInfo {
+public class AbTestInfo extends TheInternet {
     @FindBy(tagName = "h3")
     private WebElement header;
-    private WebDriver driver;
-    private WebDriverWait wait;
 
-    public AbTestInfo(WebDriver driver, WebDriverWait wait) {
-        initElements(driver, this);
-        this.driver = driver;
-        this.wait = wait;
+    public AbTestInfo() {
+        initElements(getDriver(), this);
     }
 
     public String checkAbTest() {
-        String headerText = wait.until(ExpectedConditions.visibilityOf(header)).getText();
-        driver.navigate().back();
+        String headerText = getWait().until(ExpectedConditions.visibilityOf(header)).getText();
+        getDriver().navigate().back();
         return headerText;
     }
 }

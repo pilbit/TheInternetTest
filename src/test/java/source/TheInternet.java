@@ -29,39 +29,39 @@ public class TheInternet {
 
     public String getHover() {
         clickMenu("Hovers");
-        Hover hover = new Hover(driver, wait);
+        Hover hover = new Hover();
         hover.checkViewProfile();
         return driver.getCurrentUrl();
     }
 
     public String getInfo() {
         clickMenu("A/B Testing");
-        AbTestInfo abTest = new AbTestInfo(driver, wait);
+        AbTestInfo abTest = new AbTestInfo();
         return abTest.checkAbTest();
     }
 
     public boolean getAddRemoveElements() {
         clickMenu("Add/Remove Elements");
-        AddRemoveElements addRemoveElements = new AddRemoveElements(driver, wait);
+        AddRemoveElements addRemoveElements = new AddRemoveElements();
         return addRemoveElements.checkAddRemoveElements();
     }
 
     public String getBasicAuth() {
         clickMenu("Basic Auth");
-        BasicAuth basicAuth = new BasicAuth(driver,wait);
+        BasicAuth basicAuth = new BasicAuth();
         return basicAuth.checkBasicAuth();
     }
 
     public String getAlert() {
         clickMenu("JavaScript Alerts");
-        JavaScriptAlert javaScriptAlert = new JavaScriptAlert(driver, wait);
+        JavaScriptAlert javaScriptAlert = new JavaScriptAlert();
         javaScriptAlert.checkJavaScriptAlert();
         return wait.until(visibilityOf(driver.findElement(id("result")))).getText();
     }
 
     public String getNewWindow() {
         clickMenu("Multiple Windows");
-        MultipleWindows multipleWindows = new MultipleWindows(driver, wait);
+        MultipleWindows multipleWindows = new MultipleWindows();
         return multipleWindows.MultipleWindows();
     }
 
@@ -77,5 +77,9 @@ public class TheInternet {
 
     public static Logger getLog() {
         return log;
+    }
+
+    public WebDriverWait getWait() {
+        return wait;
     }
 }
