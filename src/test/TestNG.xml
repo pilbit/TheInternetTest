@@ -2,6 +2,14 @@
 
 <suite name="Internet suite" verbose="1" >
   <test name="Fun test">
+    <groups>
+    <run>
+      <include name="grupa1"/>
+      <include name="grupa2"/>
+      <include name="config"/>
+      <exclude name="grupa3"></exclude>
+    </run>
+  </groups>
     <classes>
       <class name="TheInternetTest"/>
     </classes>
